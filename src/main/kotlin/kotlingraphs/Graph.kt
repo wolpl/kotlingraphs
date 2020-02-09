@@ -8,6 +8,35 @@ abstract class Graph<N> {
     abstract fun containsEdge(start: N, destination: N): Boolean
 
     abstract fun getAdjacentNodes(node: N): Iterable<N>
+    abstract val nodes: Set<N>
+
+    /**
+     * Returns a representation of the graph in the graphviz dot language
+     */
+    abstract fun getDotString(): String
+
+    protected fun getDotString(
+        isDirected: Boolean,
+        edgeLabelExtractor: (N, N) -> String? = { _, _ -> null }
+    ): String {
+        val sb = StringBuilder()
+        val connectorString = if (isDirected) "->" else "--"
+        sb.appendln(if (isDirected) "strict digraph{" else "strict graph{")
+        for (node in nodes) {
+            sb.appendln("\"$node\"")
+            for (neighbour in getAdjacentNodes(node)) {
+                sb.append("\"$node\" $connectorString \"$neighbour\"")
+                val label = edgeLabelExtractor(node, neighbour)
+                if (label == null)
+                    sb.appendln()
+                else
+                    sb.appendln(" [label=\"$label\"]")
+            }
+        }
+        sb.appendln("}")
+        return sb.toString()
+    }
+
     fun traverseDepthFirst(start: N): List<N> {
         val visited = mutableListOf<N>()
         fun visit(node: N) {

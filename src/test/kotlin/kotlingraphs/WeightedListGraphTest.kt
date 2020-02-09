@@ -75,4 +75,15 @@ internal class WeightedListGraphTest {
         val path = g.findAStarPath(1, 2)
         assertIterableEquals(listOf(1, 3, 2), path)
     }
+
+    @Test
+    fun `getDotString should return a non empty string`() {
+        g.addEdge(1, 2, 10.0)
+        g.addEdge(1, 3, 2.0)
+        g.addEdge(3, 2, 3.0)
+        g.addNodes(4)
+        val dotString = g.getDotString()
+        println(dotString)
+        assert(dotString.isNotEmpty())
+    }
 }

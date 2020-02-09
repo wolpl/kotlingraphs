@@ -3,6 +3,9 @@ package kotlingraphs
 class WeightedListGraph<N>(val isDirected: Boolean = false) : WeightedGraph<N>() {
     private val adMap = HashMap<N, HashMap<N, Double>>()
 
+    override val nodes: Set<N>
+        get() = adMap.keys
+
     fun addNodes(node: N, vararg moreNodes: N) {
         fun add(n: N) {
             if (!containsNode(n))
@@ -40,4 +43,6 @@ class WeightedListGraph<N>(val isDirected: Boolean = false) : WeightedGraph<N>()
     fun clear() {
         adMap.clear()
     }
+
+    override fun getDotString(): String = getDotString(isDirected)
 }

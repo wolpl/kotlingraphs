@@ -3,6 +3,9 @@ package kotlingraphs
 class ListGraph<N>(val isDirected: Boolean = false) : Graph<N>() {
     private val adMap = HashMap<N, HashSet<N>>()
 
+    override val nodes: Set<N>
+        get() = adMap.keys
+
     override fun containsNode(node: N): Boolean = adMap.containsKey(node)
 
     override fun containsEdge(start: N, destination: N): Boolean = adMap[start]?.contains(destination) ?: false
@@ -35,4 +38,6 @@ class ListGraph<N>(val isDirected: Boolean = false) : Graph<N>() {
     }
 
     fun findAStarPath(start: N, matcher: (N) -> Boolean) = findAStarPath(start, matcher, ({ _, _ -> 1.0 }))
+
+    override fun getDotString(): String = getDotString(isDirected)
 }
