@@ -17,13 +17,13 @@ abstract class Graph<N> {
 
     protected fun getDotString(
         isDirected: Boolean,
-        edgeLabelExtractor: (N, N) -> String? = { _, _ -> null }
+        edgeLabelExtractor: (N, N) -> String? = { _, _ -> null },
+        groupExtractor: (N) -> Int = { 0 }
     ): String {
         val sb = StringBuilder()
         val connectorString = if (isDirected) "->" else "--"
         sb.appendln(if (isDirected) "strict digraph{" else "strict graph{")
         for (node in nodes) {
-            sb.appendln("\"$node\"")
             for (neighbour in getAdjacentNodes(node)) {
                 sb.append("\"$node\" $connectorString \"$neighbour\"")
                 val label = edgeLabelExtractor(node, neighbour)
@@ -32,6 +32,12 @@ abstract class Graph<N> {
                 else
                     sb.appendln(" [label=\"$label\"]")
             }
+        }
+
+        nodes.associateBy(groupExtractor).forEach { (group, node) ->
+            sb.appendln("subgraph cluster_$group{\nstyle=filled;")
+            sb.appendln("\"$node\"")
+            sb.appendln("}")
         }
         sb.appendln("}")
         return sb.toString()
