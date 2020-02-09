@@ -34,7 +34,7 @@ abstract class Graph<N> {
             }
         }
 
-        nodes.associateBy(groupExtractor).forEach { (group, node) ->
+        nodes.associateWith(groupExtractor).forEach { (node, group) ->
             sb.appendln("subgraph cluster_$group{\nstyle=filled;")
             sb.appendln("\"$node\"")
             sb.appendln("}")
