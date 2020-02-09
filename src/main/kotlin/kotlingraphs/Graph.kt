@@ -17,12 +17,14 @@ abstract class Graph<N> {
 
     protected fun getDotString(
         isDirected: Boolean,
+        stylePrefix: String = "",
         edgeLabelExtractor: (N, N) -> String? = { _, _ -> null },
         groupExtractor: (N) -> Int = { 0 }
     ): String {
         val sb = StringBuilder()
         val connectorString = if (isDirected) "->" else "--"
         sb.appendln(if (isDirected) "strict digraph{" else "strict graph{")
+        sb.appendln(stylePrefix)
         for (node in nodes) {
             for (neighbour in getAdjacentNodes(node)) {
                 sb.append("\"$node\" $connectorString \"$neighbour\"")

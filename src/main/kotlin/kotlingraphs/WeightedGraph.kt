@@ -9,6 +9,6 @@ abstract class WeightedGraph<N> : Graph<N>() {
     fun findAStarPath(start: N, target: N, hFunction: (N) -> Double = { 0.0 }) =
         findAStarPath(start, target, { n1, n2 -> getEdgeWeight(n1, n2) }, hFunction)
 
-    protected fun getDotString(isDirected: Boolean, groupExtractor: (N) -> Int = { 0 }) =
-        super.getDotString(isDirected, { x, y -> getEdgeWeight(x, y).toString() }, groupExtractor)
+    protected fun getDotString(isDirected: Boolean, stylePrefix: String = "", groupExtractor: (N) -> Int = { 0 }) =
+        super.getDotString(isDirected, stylePrefix, { x, y -> getEdgeWeight(x, y).toString() }, groupExtractor)
 }
