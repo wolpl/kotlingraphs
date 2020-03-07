@@ -86,4 +86,14 @@ internal class WeightedListGraphTest {
         println(dotString)
         assert(dotString.isNotEmpty())
     }
+
+    @Test
+    fun `getIncomingNodes should return all incoming nodes`() {
+        g.addEdge(1, 2, 1.0)
+        g.addEdge(3, 2, 1.0)
+        g.addEdge(4, 2, 1.0)
+        val incoming = g.getIncomingNodes(2)
+        val incomingExpected = setOf(1, 3, 4)
+        assertIterableEquals(incomingExpected, incoming)
+    }
 }

@@ -123,5 +123,13 @@ abstract class Graph<N> {
     ) =
         findAStarPath(start, { it == target }, distanceFunction, hFunction)
 
+    fun getIncomingNodes(node: N): Set<N> {
+        val res = mutableSetOf<N>()
+        for (n in nodes) {
+            if (getAdjacentNodes(n).contains(node))
+                res.add(n)
+        }
+        return res
+    }
 
 }
