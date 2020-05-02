@@ -25,11 +25,12 @@ class ListGraph<N>(val isDirected: Boolean = false) : Graph<N>() {
     }
 
     fun removeEdge(start: N, destination: N) {
-        adMap[start]!!.remove(destination)
-        if (!isDirected) adMap[destination]!!.remove(start)
+        adMap[start]?.remove(destination)
+        if (!isDirected) adMap[destination]?.remove(start)
     }
 
-    override fun getAdjacentNodes(node: N): Iterable<N> = adMap[node]!!
+    override fun getAdjacentNodes(node: N): Iterable<N> =
+        adMap[node] ?: error("The provided node is not part of the graph: $node")
 
     fun addEdge(start: N, destination: N) {
         addNodes(start, destination)

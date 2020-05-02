@@ -31,14 +31,15 @@ class WeightedListGraph<N>(val isDirected: Boolean = false) : WeightedGraph<N>()
     }
 
     fun removeEdge(start: N, destination: N) {
-        adMap[start]!!.remove(destination)
-        if (!isDirected) adMap[destination]!!.remove(start)
+        adMap[start]?.remove(destination)
+        if (!isDirected) adMap[destination]?.remove(start)
     }
 
     override fun getEdgeWeight(start: N, destination: N) = adMap[start]?.get(destination)
         ?: throw IllegalArgumentException("The provided edge does not exist: $start -> $destination")
 
-    override fun getAdjacentNodes(node: N): Iterable<N> = adMap[node]!!.keys
+    override fun getAdjacentNodes(node: N): Iterable<N> =
+        adMap[node]?.keys ?: throw IllegalArgumentException("The provided node is not part of the graph: $node")
 
     fun clear() {
         adMap.clear()
