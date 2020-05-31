@@ -41,6 +41,10 @@ class ListGraph<N>(val isDirected: Boolean = false) : Graph<N>() {
     fun findAStarPath(start: N, matcher: (N) -> Boolean) = findAStarPath(start, matcher, ({ _, _ -> 1.0 }))
 
     override fun getDotString(): String = getDotString(isDirected)
-    fun getDotString(stylePrefix: String = "", groupExtractor: (N) -> Int = { 0 }): String =
-        getDotString(isDirected, stylePrefix, groupExtractor = groupExtractor)
+    fun getDotString(
+        stylePrefix: String = "",
+        groupExtractor: (N) -> Int = { 0 },
+        nodeLabelExtractor: (N) -> String = { it.toString() }
+    ): String =
+        getDotString(isDirected, stylePrefix, groupExtractor = groupExtractor, nodeLabelExtractor = nodeLabelExtractor)
 }

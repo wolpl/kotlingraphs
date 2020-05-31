@@ -19,7 +19,8 @@ abstract class Graph<N> {
         isDirected: Boolean,
         stylePrefix: String = "",
         edgeLabelExtractor: (N, N) -> String? = { _, _ -> null },
-        groupExtractor: (N) -> Int = { 0 }
+        groupExtractor: (N) -> Int = { 0 },
+        nodeLabelExtractor: (N) -> String = { it.toString() }
     ): String {
         val sb = StringBuilder()
         val connectorString = if (isDirected) "->" else "--"
@@ -27,7 +28,7 @@ abstract class Graph<N> {
         sb.appendln(stylePrefix)
         for (node in nodes) {
             for (neighbour in getAdjacentNodes(node)) {
-                sb.append("\"$node\" $connectorString \"$neighbour\"")
+                sb.append("\"${nodeLabelExtractor(node)}\" $connectorString \"${nodeLabelExtractor(neighbour)}\"")
                 val label = edgeLabelExtractor(node, neighbour)
                 if (label == null)
                     sb.appendln()
@@ -38,7 +39,7 @@ abstract class Graph<N> {
 
         nodes.associateWith(groupExtractor).forEach { (node, group) ->
             sb.appendln("subgraph cluster_$group{\nstyle=filled;")
-            sb.appendln("\"$node\"")
+            sb.appendln("\"${nodeLabelExtractor(node)}\"")
             sb.appendln("}")
         }
         sb.appendln("}")

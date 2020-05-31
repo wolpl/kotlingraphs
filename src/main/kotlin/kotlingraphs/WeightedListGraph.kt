@@ -46,6 +46,10 @@ class WeightedListGraph<N>(val isDirected: Boolean = false) : WeightedGraph<N>()
     }
 
     override fun getDotString(): String = getDotString(isDirected)
-    fun getDotString(stylePrefix: String = "", groupExtractor: (N) -> Int = { 0 }): String =
-        getDotString(isDirected, stylePrefix, groupExtractor)
+    fun getDotString(
+        stylePrefix: String = "",
+        groupExtractor: (N) -> Int = { 0 },
+        nodeLabelExtractor: (N) -> String = { it.toString() }
+    ): String =
+        getDotString(isDirected, stylePrefix, groupExtractor, nodeLabelExtractor)
 }
