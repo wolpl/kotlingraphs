@@ -15,7 +15,7 @@ abstract class Graph<N> {
      */
     abstract fun getDotString(): String
 
-    protected fun getDotString(
+    fun getDotString(
         isDirected: Boolean,
         stylePrefix: String = "",
         edgeLabelExtractor: (N, N) -> String? = { _, _ -> null },
@@ -75,7 +75,7 @@ abstract class Graph<N> {
         return visited
     }
 
-    protected inline fun findAStarPath(
+    inline fun findAStarPath(
         start: N,
         matcher: (N) -> Boolean,
         distanceFunction: (N, N) -> Double,
@@ -116,7 +116,7 @@ abstract class Graph<N> {
         return null
     }
 
-    protected inline fun findAStarPath(
+    inline fun findAStarPath(
         start: N,
         target: N,
         distanceFunction: (N, N) -> Double,

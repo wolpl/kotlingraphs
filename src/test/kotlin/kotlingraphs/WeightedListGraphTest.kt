@@ -77,6 +77,15 @@ internal class WeightedListGraphTest {
     }
 
     @Test
+    fun `Dijkstra should find shortest path in small graph with infinite weights`() {
+        g.addEdge(1, 2, Double.POSITIVE_INFINITY)
+        g.addEdge(1, 3, 2.0)
+        g.addEdge(3, 2, 3.0)
+        val path = g.findAStarPath(1, 2)
+        assertIterableEquals(listOf(1, 3, 2), path)
+    }
+
+    @Test
     fun `getDotString should return a non empty string`() {
         g.addEdge(1, 2, 10.0)
         g.addEdge(1, 3, 2.0)
