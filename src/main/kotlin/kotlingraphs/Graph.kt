@@ -78,7 +78,7 @@ abstract class Graph<N> {
     inline fun findAStarPath(
         start: N,
         matcher: (N) -> Boolean,
-        distanceFunction: (N, N) -> Double,
+        distanceFunction: (N, N) -> Double = { _, _ -> 1.0 },
         crossinline hFunction: (N) -> Double = { 0.0 }
     ): List<N>? {
         val visited = mutableSetOf<N>()
@@ -119,8 +119,8 @@ abstract class Graph<N> {
     inline fun findAStarPath(
         start: N,
         target: N,
-        distanceFunction: (N, N) -> Double,
-        crossinline hFunction: (N) -> Double
+        distanceFunction: (N, N) -> Double = { _, _ -> 1.0 },
+        crossinline hFunction: (N) -> Double = { 0.0 }
     ) =
         findAStarPath(start, { it == target }, distanceFunction, hFunction)
 
