@@ -133,4 +133,6 @@ abstract class Graph<N> {
         return res
     }
 
+    abstract fun <T> mapNodes(nodeConverter: (N) -> T): Graph<T>
+
 }

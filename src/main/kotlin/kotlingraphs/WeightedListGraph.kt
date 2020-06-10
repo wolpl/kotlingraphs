@@ -52,4 +52,17 @@ class WeightedListGraph<N>(val isDirected: Boolean = false) : WeightedGraph<N>()
         nodeLabelExtractor: (N) -> String = { it.toString() }
     ): String =
         getDotString(isDirected, stylePrefix, groupExtractor, nodeLabelExtractor)
+
+    override fun <T> mapNodes(nodeConverter: (N) -> T): WeightedListGraph<T> {
+        val res = WeightedListGraph<T>(isDirected)
+        val nodeMap = nodes.associateWith { nodeConverter(it) }
+        for (node in this.nodes) {
+            res.addNodes(nodeMap[node]!!)
+            for (neighbour in getAdjacentNodes(node)) {
+                val weight = getEdgeWeight(node, neighbour)
+                res.addEdge(nodeMap[node]!!, nodeMap[neighbour]!!, weight)
+            }
+        }
+        return res
+    }
 }

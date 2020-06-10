@@ -105,4 +105,15 @@ internal class WeightedListGraphTest {
         val incomingExpected = setOf(1, 3, 4)
         assertIterableEquals(incomingExpected, incoming)
     }
+
+    @Test
+    fun `mapNodes should create the correct graph`() {
+        g.addEdge(1, 2, 10.0)
+        g.addEdge(1, 3, 2.0)
+        g.addEdge(3, 2, 3.0)
+        val newG = g.mapNodes { (it * 2).toString() }
+        assertIterableEquals(setOf("2", "4", "6"), newG.nodes)
+        assertIterableEquals(setOf("4", "6"), newG.getAdjacentNodes("2"))
+        assertIterableEquals(setOf("4"), newG.getAdjacentNodes("6"))
+    }
 }

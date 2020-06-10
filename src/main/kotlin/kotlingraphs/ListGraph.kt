@@ -47,4 +47,16 @@ class ListGraph<N>(val isDirected: Boolean = false) : Graph<N>() {
         nodeLabelExtractor: (N) -> String = { it.toString() }
     ): String =
         getDotString(isDirected, stylePrefix, groupExtractor = groupExtractor, nodeLabelExtractor = nodeLabelExtractor)
+
+    override fun <T> mapNodes(nodeConverter: (N) -> T): ListGraph<T> {
+        val res = ListGraph<T>(isDirected)
+        val nodeMap = nodes.associateWith { nodeConverter(it) }
+        for (node in this.nodes) {
+            res.addNodes(nodeMap[node]!!)
+            for (neighbour in getAdjacentNodes(node)) {
+                res.addEdge(nodeMap[node]!!, nodeMap[neighbour]!!)
+            }
+        }
+        return res
+    }
 }

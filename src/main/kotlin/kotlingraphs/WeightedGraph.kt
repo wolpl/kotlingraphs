@@ -22,4 +22,6 @@ abstract class WeightedGraph<N> : Graph<N>() {
             groupExtractor,
             nodeLabelExtractor
         )
+
+    abstract override fun <T> mapNodes(nodeConverter: (N) -> T): WeightedGraph<T>
 }
