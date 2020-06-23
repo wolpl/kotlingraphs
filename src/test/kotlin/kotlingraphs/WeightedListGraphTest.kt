@@ -58,6 +58,15 @@ internal class WeightedListGraphTest {
     }
 
     @Test
+    fun `BFS should stop according to predicate`() {
+        g.addEdge(1, 2, 1.0)
+        g.addEdge(2, 3, 2.0)
+        g.addEdge(3, 4, 2.0)
+        val nodes = g.traverseBreadthFirst(1) { it == 2 }
+        assertIterableEquals(listOf(1, 2), nodes)
+    }
+
+    @Test
     fun `DFS should find all nodes in linear graph`() {
         g.addEdge(1, 2, 1.0)
         g.addEdge(2, 3, 2.0)

@@ -58,7 +58,17 @@ abstract class Graph<N> {
         return visited
     }
 
-    fun traverseBreadthFirst(start: N, maxDepth: Int = Int.MAX_VALUE): List<N> {
+    /**
+     * Traverses the graph in breadth-first order.
+     * @param start The node at which the traverse will begin
+     * @param maxDepth A maximum depth where the traversal will not visit deeper nodes
+     * @param stopTraversalPredicate A predicate that determines whether the traversal should not go any deeper at a certain node
+     */
+    fun traverseBreadthFirst(
+        start: N,
+        maxDepth: Int = Int.MAX_VALUE,
+        stopTraversalPredicate: (N) -> Boolean = { false }
+    ): List<N> {
         val visited = mutableListOf<N>()
         val queue: Queue<N> = LinkedList<N>()
         val depthMap = hashMapOf(start to 0)
@@ -67,7 +77,7 @@ abstract class Graph<N> {
             val current = queue.poll()
             val currentDepth = depthMap[current]!!
             visited += current
-            if (currentDepth == maxDepth) continue
+            if (currentDepth == maxDepth || stopTraversalPredicate(current)) continue
             getAdjacentNodes(current).filter { it !in queue && it !in visited }.forEach {
                 queue.offer(it)
                 depthMap[it] = currentDepth + 1
