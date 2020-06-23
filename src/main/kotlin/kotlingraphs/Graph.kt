@@ -9,6 +9,7 @@ abstract class Graph<N> {
 
     abstract fun getAdjacentNodes(node: N): Iterable<N>
     abstract val nodes: Set<N>
+    abstract val isDirected: Boolean
 
     /**
      * Returns a representation of the graph in the graphviz dot language
@@ -135,4 +136,14 @@ abstract class Graph<N> {
 
     abstract fun <T> mapNodes(nodeConverter: (N) -> T): Graph<T>
 
+    fun cloneToListGraph(): ListGraph<N> {
+        val res = ListGraph<N>(isDirected)
+        res.addNodes(nodes)
+        for (node in nodes) {
+            for (neighbour in getAdjacentNodes(node)) {
+                res.addEdge(node, neighbour)
+            }
+        }
+        return res
+    }
 }

@@ -1,8 +1,7 @@
 package kotlingraphs
 
 import org.junit.jupiter.api.AfterEach
-import org.junit.jupiter.api.Assertions.assertFalse
-import org.junit.jupiter.api.Assertions.assertIterableEquals
+import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
@@ -115,5 +114,25 @@ internal class WeightedListGraphTest {
         assertIterableEquals(setOf("2", "4", "6"), newG.nodes)
         assertIterableEquals(setOf("4", "6"), newG.getAdjacentNodes("2"))
         assertIterableEquals(setOf("4"), newG.getAdjacentNodes("6"))
+    }
+
+    @Test
+    fun `mapEdgeWeights should create the correct graph`() {
+        g.addEdge(1, 2, 10.0)
+        g.addEdge(1, 3, 2.0)
+        g.addEdge(3, 2, 3.0)
+        val newG = g.mapEdgeWeights { _, _, oldWeight -> (oldWeight * 2) }
+        assertEquals(newG.getEdgeWeight(1, 2), 20.0)
+        assertEquals(newG.getEdgeWeight(1, 3), 4.0)
+        assertEquals(newG.getEdgeWeight(3, 2), 6.0)
+    }
+
+    @Test
+    fun `cloneToWeightedListGraph should return correct graph`() {
+        g.addEdge(1, 2, 10.0)
+        g.addEdge(1, 3, 2.0)
+        g.addEdge(3, 2, 3.0)
+        val newG = g.cloneToWeightedListGraph()
+        assertEquals(g, newG)
     }
 }

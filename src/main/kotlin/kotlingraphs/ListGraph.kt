@@ -1,6 +1,6 @@
 package kotlingraphs
 
-class ListGraph<N>(val isDirected: Boolean = false) : Graph<N>() {
+class ListGraph<N>(override val isDirected: Boolean = false) : Graph<N>() {
     private val adMap = HashMap<N, HashSet<N>>()
 
     override val nodes: Set<N>
@@ -10,13 +10,16 @@ class ListGraph<N>(val isDirected: Boolean = false) : Graph<N>() {
 
     override fun containsEdge(start: N, destination: N): Boolean = adMap[start]?.contains(destination) ?: false
 
-    fun addNodes(node: N, vararg moreNodes: N) {
+    fun addNodes(vararg nodes: N) {
+        addNodes(nodes.toList())
+    }
+
+    fun addNodes(nodes: Iterable<N>) {
         fun add(n: N) {
             if (!containsNode(n))
                 adMap[n] = HashSet()
         }
-        add(node)
-        moreNodes.forEach { add(it) }
+        nodes.forEach { add(it) }
     }
 
     fun removeNode(node: N) {
@@ -58,5 +61,23 @@ class ListGraph<N>(val isDirected: Boolean = false) : Graph<N>() {
             }
         }
         return res
+    }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
+
+        other as ListGraph<*>
+
+        if (isDirected != other.isDirected) return false
+        if (adMap != other.adMap) return false
+
+        return true
+    }
+
+    override fun hashCode(): Int {
+        var result = isDirected.hashCode()
+        result = 31 * result + adMap.hashCode()
+        return result
     }
 }

@@ -1,18 +1,21 @@
 package kotlingraphs
 
-class WeightedListGraph<N>(val isDirected: Boolean = false) : WeightedGraph<N>() {
+class WeightedListGraph<N>(override val isDirected: Boolean = false) : WeightedGraph<N>() {
     private val adMap = HashMap<N, HashMap<N, Double>>()
 
     override val nodes: Set<N>
         get() = adMap.keys
 
-    fun addNodes(node: N, vararg moreNodes: N) {
+    fun addNodes(vararg nodes: N) {
+        addNodes(nodes.toList())
+    }
+
+    fun addNodes(nodes: Iterable<N>) {
         fun add(n: N) {
             if (!containsNode(n))
                 adMap[n] = HashMap()
         }
-        add(node)
-        moreNodes.forEach { add(it) }
+        nodes.forEach { add(it) }
     }
 
     fun addEdge(start: N, destination: N, weight: Double) {
@@ -64,5 +67,23 @@ class WeightedListGraph<N>(val isDirected: Boolean = false) : WeightedGraph<N>()
             }
         }
         return res
+    }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
+
+        other as WeightedListGraph<*>
+
+        if (isDirected != other.isDirected) return false
+        if (adMap != other.adMap) return false
+
+        return true
+    }
+
+    override fun hashCode(): Int {
+        var result = isDirected.hashCode()
+        result = 31 * result + adMap.hashCode()
+        return result
     }
 }

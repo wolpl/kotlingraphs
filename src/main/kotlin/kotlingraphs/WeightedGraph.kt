@@ -24,4 +24,26 @@ abstract class WeightedGraph<N> : Graph<N>() {
         )
 
     abstract override fun <T> mapNodes(nodeConverter: (N) -> T): WeightedGraph<T>
+
+    fun cloneToWeightedListGraph(): WeightedListGraph<N> {
+        val res = WeightedListGraph<N>(isDirected)
+        res.addNodes(nodes)
+        for (node in nodes) {
+            for (neighbour in getAdjacentNodes(node)) {
+                res.addEdge(node, neighbour, getEdgeWeight(node, neighbour))
+            }
+        }
+        return res
+    }
+
+    fun mapEdgeWeights(weightConverter: (from: N, to: N, oldWeight: Double) -> Double): WeightedListGraph<N> {
+        val res = WeightedListGraph<N>(isDirected)
+        res.addNodes(nodes)
+        for (node in nodes) {
+            for (neighbour in getAdjacentNodes(node)) {
+                res.addEdge(node, neighbour, weightConverter(node, neighbour, getEdgeWeight(node, neighbour)))
+            }
+        }
+        return res
+    }
 }
