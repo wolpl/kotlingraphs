@@ -47,6 +47,9 @@ abstract class Graph<N> {
         return sb.toString()
     }
 
+    val edges
+        get() = nodes.flatMap { node -> getAdjacentNodes(node).map { neighbour -> node to neighbour } }
+
     fun traverseDepthFirst(start: N): List<N> {
         val visited = mutableListOf<N>()
         fun visit(node: N) {

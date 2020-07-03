@@ -144,4 +144,15 @@ internal class WeightedListGraphTest {
         val newG = g.cloneToWeightedListGraph()
         assertEquals(g, newG)
     }
+
+    @Test
+    fun `mapOrRemoveEdgeWeights should remove the correct edges`() {
+        g.addEdge(1, 2, 10.0)
+        g.addEdge(1, 3, 2.0)
+        g.addEdge(3, 2, 3.0)
+        val newG = g.mapOrRemoveEdgeWeights { _, _, weight -> if (weight != 2.0) weight else null }
+        assertFalse { newG.containsEdge(1, 3) }
+        assertEquals(10.0, g.getEdgeWeight(1, 2))
+        assertEquals(3.0, g.getEdgeWeight(3, 2))
+    }
 }
